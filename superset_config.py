@@ -16,6 +16,8 @@ def construct_connection_string(driver, user, password, host, port, db_name):
         return 'postgresql://%s:%s@%s:%s/%s' % (user, password, host, port, db_name)
     elif driver == 'sqlite':
         return 'sqlite:///{superset_home}/superset.db'.format(superset_home=os.environ.get('SUPERSET_HOME'))
+    elif driver == 'mysql':
+        return 'mysql://%s:%s@%s:%s/%s' % (user, password, host, port, db_name)
 
     raise ValueError('Unrecognized driver, got: {}' % driver)
 
