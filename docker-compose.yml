@@ -1,0 +1,60 @@
+version: '2.1'
+services:
+  redis:
+    image: redis:5.0.3
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+  
+  postgres:
+    image: postgres:10
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U superset"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_DB=superset
+      - POSTGRES_PASSWORD=superset
+      - POSTGRES_USER=superset
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  
+  superset:
+    build:
+      context: .
+      dockerfile: eda.Dockerfile
+      args:
+        - INIT_USERNAME
+        - INIT_PASSWORD
+        - INIT_EMAIL
+    environment:
+      - DB_DRIVER=sqlite
+      - DB_USER=superset
+      - DB_PASSWORD=superset
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=superset
+      - CACHE_HOST=redis
+      - CACHE_PORT=6379
+    ports:
+      - 8088:8088
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: ["superset"]
+    volumes:
+      - ./superset_config.py:/superset/superset_config.py
+
+volumes:
+  postgres:
+    external: false
+  redis:
+    external: false
