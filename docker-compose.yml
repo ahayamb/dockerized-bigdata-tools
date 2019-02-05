@@ -29,7 +29,7 @@ services:
   superset:
     build:
       context: .
-      dockerfile: eda.Dockerfile
+      dockerfile: slice.Dockerfile
     environment:
       - DB_DRIVER=mysql
       - DB_USER=superset
