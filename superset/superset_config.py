@@ -21,7 +21,7 @@ def construct_connection_string(driver, user, password, host, port, db_name):
 
     raise ValueError('Unrecognized driver, got: {}' % driver)
 
-# Metadata database's configuration
+# Metadb configuration
 DB_DRIVER = get_env_variable('DB_DRIVER', 'sqlite')
 DB_USER = get_env_variable('DB_USER')
 DB_PASSWORD = get_env_variable('DB_PASSWORD')
