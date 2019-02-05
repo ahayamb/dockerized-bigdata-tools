@@ -8,28 +8,27 @@ services:
     volumes:
       - redis:/data
   
-  mysql:
-    image: mysql:5.7
+  postgres:
+    image: postgres:10
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -U superset"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U superset"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
-      - MYSQL_DATABASE=superset
-      - MYSQL_PASSWORD=superset
-      - MYSQL_USER=superset
-      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_DB=superset
+      - POSTGRES_PASSWORD=superset
+      - POSTGRES_USER=superset
     ports:
-      - 3306:3306
-    # volumes:
-    #   - postgres:/var/lib/postgresql/data
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
   
   superset:
     build:
       context: .
-      dockerfile: slice.Dockerfile
+      dockerfile: Dockerfile
     environment:
       - DB_DRIVER=mysql
       - DB_USER=superset
@@ -45,12 +44,10 @@ services:
     ports:
       - 8088:8088
     depends_on:
-      - mysql
-      # postgres:
-      #   condition: service_healthy
-      - redis
-      # redis:
-      #   condition: service_started
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     # command: ["init", "superset"]
     entrypoint: ["/bin/sh", "-c", "tail -f /dev/null"]
     volumes:
