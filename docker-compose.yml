@@ -3,39 +3,34 @@ services:
   redis:
     image: redis:5.0.3
     restart: unless-stopped
-    ports:
-      - 6379:6379
     volumes:
       - redis:/data
   
-  mysql:
-    image: mysql:5.7
+  metadb:
+    image: postgres:10
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -U superset"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U superset"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
-      - MYSQL_DATABASE=superset
-      - MYSQL_PASSWORD=superset
-      - MYSQL_USER=superset
-      - MYSQL_ROOT_PASSWORD=root
-    ports:
-      - 3306:3306
-    # volumes:
-    #   - postgres:/var/lib/postgresql/data
+      - POSTGRES_DB=superset
+      - POSTGRES_PASSWORD=superset
+      - POSTGRES_USER=superset
+    volumes:
+      - metadb:/var/lib/postgresql/data
   
   superset:
     build:
       context: .
-      dockerfile: eda.Dockerfile
+      dockerfile: Dockerfile
     environment:
-      - DB_DRIVER=mysql
+      - DB_DRIVER=pg
       - DB_USER=superset
       - DB_PASSWORD=superset
-      - DB_HOST=mysql
-      - DB_PORT=3306
+      - DB_HOST=metadb
+      - DB_PORT=5432
       - DB_NAME=superset
       - CACHE_HOST=redis
       - CACHE_PORT=6379
@@ -45,19 +40,16 @@ services:
     ports:
       - 8088:8088
     depends_on:
-      - mysql
-      # postgres:
-      #   condition: service_healthy
-      - redis
-      # redis:
-      #   condition: service_started
-    # command: ["init", "superset"]
-    entrypoint: ["/bin/sh", "-c", "tail -f /dev/null"]
+      metadb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: ["initialize", "superset"]
     volumes:
       - ./superset_config.py:/superset/superset_config.py
 
 volumes:
-  postgres:
+  metadb:
     external: false
   redis:
     external: false
