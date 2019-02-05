@@ -1,9 +1,7 @@
 #!/bin/bash
 
 init_superset_admin() {
-    if [[ $(fabmanager list-users --app superset | grep "role\:\[Admin\]" | wc -l) -gt 0 ]]; then
-        exit 0
-    else
+    if [[ $(fabmanager list-users --app superset | grep "role\:\[Admin\]" | wc -l) -eq 0 ]]; then
         if [ "$INIT_USERNAME" ]; then USERNAME="$INIT_USERNAME"; else USERNAME=admin; fi
         if [ "$INIT_FIRSTNAME" ]; then FIRSTNAME="$INIT_FIRSTNAME"; else FIRSTNAME=admin; fi
         if [ "$INIT_LASTNAME" ]; then LASTNAME="$INIT_LASTNAME"; else LASTNAME=admin; fi
@@ -22,10 +20,10 @@ init_superset_admin() {
     fi
 }
 
-if [ "$1" = "init" ]; then
+if [ "$1" = "initialize" ]; then
     init_superset_admin
 else
-    exec "$@"
+    /bin/bash -c "superset $@"
 fi
 
 if [ "$2" = "superset" ]; then

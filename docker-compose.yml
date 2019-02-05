@@ -30,11 +30,11 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DB_DRIVER=mysql
+      - DB_DRIVER=pg
       - DB_USER=superset
       - DB_PASSWORD=superset
-      - DB_HOST=mysql
-      - DB_PORT=3306
+      - DB_HOST=postgres
+      - DB_PORT=5432
       - DB_NAME=superset
       - CACHE_HOST=redis
       - CACHE_PORT=6379
@@ -48,8 +48,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-    # command: ["init", "superset"]
-    entrypoint: ["/bin/sh", "-c", "tail -f /dev/null"]
+    command: ["initialize", "superset"]
     volumes:
       - ./superset_config.py:/superset/superset_config.py
 
