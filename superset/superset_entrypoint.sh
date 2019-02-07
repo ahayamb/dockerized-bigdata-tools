@@ -22,8 +22,8 @@ init_superset_admin() {
 
 if [ "$1" = "initialize" ]; then
     init_superset_admin
-else
-    /bin/bash -c "superset $@"
+elif [ "$1" = "execute" ]; then
+    /bin/bash -c "superset ${@:2}"
 fi
 
 if [ "$2" = "superset" ]; then
