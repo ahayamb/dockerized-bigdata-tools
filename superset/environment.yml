@@ -5,10 +5,11 @@ dependencies:
 - python=3.6
 - pip
 - pip:
-  - superset
-  - pandas==0.23.4
-  - pyhive==0.6.1
   - cryptography==2.3.1
-  - psycopg2-binary==2.7.7
-  - mysqlclient==1.4.1
   - gevent==1.4.0
+  - mysqlclient==1.4.1
+  - pandas==0.23.4
+  - psycopg2-binary==2.7.7
+  - pyhive==0.6.1
+  - pymssql==2.1.4
+  - superset
