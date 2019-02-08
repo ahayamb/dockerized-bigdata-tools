@@ -12,4 +12,5 @@ dependencies:
   - psycopg2-binary==2.7.7
   - pyhive==0.6.1
   - pymssql==2.1.4
+  - redis==2.10.6
   - superset
