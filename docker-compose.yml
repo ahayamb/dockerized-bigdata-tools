@@ -34,9 +34,7 @@ services:
       - DB_NAME=superset
       - CACHE_HOST=redis
       - CACHE_PORT=6379
-      - INIT_USERNAME=ahayamb
-      - INIT_PASSWORD=admin
-      - INIT_EMAIL=ahayam.tugas1@gmail.com
+      - INIT_PASSWORD
     ports:
       - 8088:8088
     depends_on:
@@ -50,6 +48,6 @@ services:
 
 volumes:
   metadb:
-    external: false
+    external: true
   redis:
-    external: false
+    external: true
