@@ -3,6 +3,7 @@ FROM openjdk:8-jre
 ENV LANG="C.UTF-8" \
     MINICONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
     SPARK_URL="https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-hadoop2.7.tgz"
+
 WORKDIR /spark
 
 RUN wget ${MINICONDA_URL} -O miniconda.sh \
