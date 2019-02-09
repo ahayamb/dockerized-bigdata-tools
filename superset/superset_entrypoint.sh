@@ -22,14 +22,15 @@ init_superset_admin() {
 
 if [ "$1" = "initialize" ]; then
     init_superset_admin
-else
-    /bin/bash -c "superset $@"
+elif [ "$1" = "execute" ]; then
+    /bin/bash -c "superset ${@:2}"
 fi
 
 if [ "$2" = "superset" ]; then
     gunicorn --bind 0.0.0.0:8088 \
         --workers $((2 * $(getconf _NPROCESSORS_ONLN) / 2 + 1)) \
-        --timeout 60 \
+        -k gevent \
+        --timeout 480 \
         --limit-request-line 0 \
         --limit-request-field_size 0 \
         superset:app

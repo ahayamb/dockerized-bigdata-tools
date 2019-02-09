@@ -41,3 +41,15 @@ class CeleryConfig(object):
     CELERY_TASK_PROTOCOL = 1
 
 CELERY_CONFIG = CeleryConfig
+
+# Cache configuration
+CACHE_DEFAULT_TIMEOUT = 86400
+CACHE_CONFIG = {
+    'CACHE_TYPE': 'redis',
+    'CACHE_DEFAULT_TIMEOUT': 86400,
+    'CACHE_KEY_PREFIX': 'superset_',
+    'CACHE_REDIS_HOST': CACHE_HOST,
+    'CACHE_REDIS_PORT': CACHE_PORT,
+    'CACHE_REDIS_DB': 1,
+    'CACHE_REDIS_URL': 'redis://%s:%s/1' % (CACHE_HOST, CACHE_PORT)
+}
