@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+  thrift:
+    build: .
+    environment:
+      - SPARK_MASTER_HOST=master
+      - SPARK_MASTER_PORT=7077
+      - THRIFT_PORT=9099
+    ports:
+      - 9099:9099
+    entrypoint: [ "./entrypoint.sh", "start" ]
+    networks:
+      - spark_cluster
+
+networks:
+  spark_cluster:
+    external: true

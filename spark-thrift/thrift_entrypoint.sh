@@ -2,12 +2,12 @@
 
 start_server() {
     $SPARK_HOME/sbin/start-thriftserver.sh \
-        --conf spark.driver.memory=$SPARK_DRIVER_MEMORY \
-        --conf spark.executor.memory=$SPARK_EXECUTOR_MEMORY \
-        --conf spark.driver.maxResultSize=$SPARK_DRIVER_MAXRESULTSIZE \
-        --conf hive.execution.engine=true \
+        --master "spark://$SPARK_MASTER_HOST:$SPARK_MASTER_PORT" \
+        --hiveconf hive.server2.thrift.port=$THRIFT_PORT \
+        --executor-memory=1g \
         --conf mapred.compress.map.output=true \
         --conf mapred.output.compress=true \
+        --conf hive.execution.engine=true \
         --conf hive.auto.convert.join=true \
         --conf hive.exec.parallel=true \
         --conf hive.vectorized.execution.enabled=true \
