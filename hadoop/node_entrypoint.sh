@@ -23,4 +23,12 @@ initialize_keys
 service ssh start
 initialize_known_hosts
 
+hdfs namenode -format
+
+if [ "$1" = "master" ]; then
+    /bin/bash -c "start-dfs.sh"
+    /bin/bash -c "start-yarn.sh"
+fi
+
+# tail -f /hadoop/logs/*.log
 tail -f /dev/null
