@@ -1,0 +1,27 @@
+version: '3'
+services:
+  master:
+    build: .
+    image: ${REGISTRY_ADDR}/master
+    environment:
+      - SPARK_MASTER_HOST=0.0.0.0
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=5055
+    ports:
+      - 7077:7077
+      - 5055:5055
+    entrypoint: [ "./entrypoint.sh", "master" ]
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  worker:
+    build: .
+    image: ${REGISTRY_ADDR}/worker
+    environment:
+      - SPARK_MASTER_HOST=master
+      - SPARK_MASTER_PORT=7077
+    depends_on:
+      - master
+    entrypoint: [ "./entrypoint.sh", "worker"]
