@@ -28,8 +28,7 @@ services:
   
   superset:
     build:
-      context: superset
-      dockerfile: Dockerfile
+      context: .
     environment:
       - DB_DRIVER=pg
       - DB_USER=superset
@@ -49,9 +48,7 @@ services:
         condition: service_started
     command: ["initialize", "superset"]
     volumes:
-      - ./superset/superset_config.py:/superset/superset_config.py
-    networks:
-      - spark_cluster
+      - ./superset_config.py:/superset/superset_config.py
 
 volumes:
   metadb:
