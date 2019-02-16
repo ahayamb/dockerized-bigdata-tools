@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  master:
+    build: .
+    entrypoint: [ "./entrypoint.sh" ]
+    ports:
+      - 9000:9000
+  worker:
+    build: .
+    entrypoint: [ "./entrypoint.sh" ]
