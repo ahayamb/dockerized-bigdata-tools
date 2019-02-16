@@ -5,8 +5,6 @@ services:
     restart: unless-stopped
     volumes:
       - redis:/data
-    networks:
-      - spark_cluster
   
   metadb:
     image: postgres:10
@@ -21,10 +19,7 @@ services:
       - POSTGRES_PASSWORD=superset
       - POSTGRES_USER=superset
     volumes:
-      - metadb:/var/lib/postgresql/data
-    networks:
-      - spark_cluster
-    
+      - metadb:/var/lib/postgresql/data    
   
   superset:
     build:
@@ -54,8 +49,4 @@ volumes:
   metadb:
     external: true
   redis:
-    external: true
-
-networks:
-  spark_cluster:
     external: true
