@@ -10,6 +10,8 @@ services:
       - 7077:7077
       - 5055:5055
     entrypoint: [ "./entrypoint.sh", "master" ]
+    networks: 
+      - spark_cluster
   
   worker:
     build: .
@@ -19,3 +21,9 @@ services:
     depends_on:
       - master
     entrypoint: [ "./entrypoint.sh", "worker"]
+    networks:
+      - spark_cluster
+
+networks:
+  spark_cluster:
+    external: true
