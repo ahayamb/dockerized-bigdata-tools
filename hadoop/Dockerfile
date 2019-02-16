@@ -3,7 +3,7 @@ FROM openjdk:8-jre
 WORKDIR /hadoop
 
 ENV LANG="C.UTF-8" \
-    HADOOP_URL="http://10.181.15.100:8080/hadoop-2.9.2.tar.gz" \
+    HADOOP_URL="https://www-eu.apache.org/dist/hadoop/common/hadoop-2.9.2/hadoop-2.9.2.tar.gz" \
     HADOOP_HOME="/hadoop"
 
 ENV HADOOP_INSTALL="${HADOOP_HOME}" \
