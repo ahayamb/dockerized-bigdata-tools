@@ -13,4 +13,5 @@ dependencies:
   - pyhive==0.6.1
   - pymssql==2.1.4
   - redis==2.10.6
+  - sqlalchemy==1.2.18
   - superset==0.28.0
